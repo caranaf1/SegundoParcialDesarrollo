@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+crossorigin="anonymous"></script> 
+<title>estudiantes</title>
+</head>
+<body>
+    <style>
+        a{
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+        }
+    </style>
+    
+ <header>
+    <nav class="navbar navbar-expand-sm text-white " style="background-color: #9933FF;color:white">
+        <div class="container-fluid">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="" href="/">CRUD</a>
+            </li>
+            
+          </ul>
+        </div>
+      </nav>
+ </header>
+
+   
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="/crud_e" method="post"  >
+                <label for="id">ID:</label>
+                <input class="form-control" type="text" name="txt_id" id="txt_id" placeholder="0" readonly>
+                <label for="carne">Carnet:</label>
+                <input class="form-control" type="text" name="txt_carne" id="txt_carne" placeholder="carne">
+                <label for="nombre">Nombres:</label>
+                <input class="form-control" type="text" name="txt_nombres" id="txt_nombres" placeholder="nombres">
+                <label for="apellidos">Apellidos:</label>
+                <input class="form-control" type="text" name="txt_apellidos" id="txt_apellidos" placeholder="apellidos">
+                <label for="Direccion">Direccion:</label>
+                <input class="form-control" type="text" name="txt_direccion" id="txt_direccion" placeholder="direccion">
+                <label for="telefono">Telefono:</label>
+                <input class="form-control" type="text" name="txt_telefono" id="txt_telefono" placeholder="telefono">
+                <label for="genero">Genero</label>
+                <select class="form-select" type="text" name="txt_genero" id="txt_genero" placeholder="genero">
+                    <option value="i">Seleccione un genero</option>
+                    <option value="1">Masculino</option>
+                    <option value="0">Femenino</option>
+                </select>
+                <label for="email">Email:</label>
+                <input class="form-control" type="text" name="txt_email" id="txt_email" placeholder="email">
+                <label for="nacimiento">Fecha Nacimiento:</label>
+                <input class="form-control" type="date" name="txt_fecha_nacimiento" id="txt_fecha_nacimiento" placeholder="dd-mm-yyyy">
+
+                <button class="btn btn-outline-primary" type="submit" id="btn_crear" name="btn_crear" value="crear">crear</button>
+                <button class="btn btn-outline-success" type="submit" id="btn_actualizar" name="btn_actualizar" value="actualizar">actualizar</button>
+                <button class="btn btn-outline-danger" id="btn_eliminar" name="btn_eliminar" value="eliminar" onclick="javascript:if(!confirm('Desea Eliminar a Este Estudiante?')) return false">eliminar</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    
+<div class="container text-center my-5">
+    <h1>Estudiantes</h1>
+    <hr/>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="limpiar();">
+        Nuevo Estudiante
+      </button>
+      <br/>
+      <br/>
+    <table class="table table-striped table-hover">
+        <thead>
+            <th>carne</th>
+            <th>nombre</th>
+            <th>apellidos</th>
+            <th>direccion</th>
+            <th>telefono</th>
+            <th>genero</th>
+            <th>email</th>
+            <th>fecha de nacimiento</th>
+            
+        </thead>
+        
+        <tbody id="tbl_estudiante">
+           <% resultado.forEach((estudiante) => { %>
+            <tr data-idestudiante="<%= estudiante.id_estudiante %>">
+                <td><%= estudiante.Carne %></td>
+                <td><%= estudiante.nombres %></td>
+                <td><%= estudiante.apellidos %></td>
+                <td><%= estudiante.direccion %></td>
+                <td><%= estudiante.telefono %></td>
+                <% if(estudiante.genero==1){%>
+                <td>Masculino</td>
+                <%}else{%>
+                <td>Femenino</td>
+                <%}%>
+                <td><%= estudiante.email%></td>
+                <td><%= estudiante.fecha_nacimiento %></td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $('#tbl_estudiante').on('click','tr td',function(evnt){
+        var target;
+        var id_estudiante,carnet,nombres,apellidos,direccion,telefono,genero,email,fecha_nacimiento;
+        target = $(evnt.target);
+        id_estudiante=target.parent().data('idestudiante');
+        carnet=target.parent("tr").find("td").eq(0).html();
+        nombres=target.parent("tr").find("td").eq(1).html();
+        apellidos=target.parent("tr").find("td").eq(2).html();
+        direccion=target.parent("tr").find("td").eq(3).html();
+        telefono=target.parent("tr").find("td").eq(4).html();
+        genero=target.parent("tr").find("td").eq(5).html();
+        email=target.parent("tr").find("td").eq(6).html();
+        fecha_nacimiento=target.parent("tr").find("td").eq(7).html();
+        $('#txt_id').val(id_estudiante);
+        $('#txt_carne').val(carnet);
+        $('#txt_nombres').val(nombres);
+        $('#txt_apellidos').val(apellidos);
+        $('#txt_direccion').val(direccion);
+        $('#txt_telefono').val(telefono);
+        $('#txt_email').val(email);
+        if(genero=="Masculino"){
+          $('#txt_genero').val(1);
+        }else{
+          $('#txt_genero').val(0);
+        }
+        $('#txt_fecha_nacimiento').val(fecha_nacimiento);
+        $('#exampleModal').modal('show');
+    });
+  
+</script>
+<script type="text/javascript">
+    function limpiar(){
+        $('#txt_id').val(0);
+        $('#txt_carne').val('');
+        $('#txt_nombres').val('');
+        $('#txt_apellidos').val('');
+        $('#txt_direccion').val('');
+        $('#txt_telefono').val('');
+        $('#txt_email').val('');
+        $('#txt_genero').val("i");
+        $('#txt_fecha_nacimiento').val('');
+    }
+</script>
+
+</body>
+
+
+</html>
+
